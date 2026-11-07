@@ -1,11 +1,25 @@
-@"
+# Dependencies
 node_modules/
+
+# Environment variables
 .env
 .env.*
 !.env.example
+
+# Build files
 dist/
 build/
-uploads/*
-!uploads/.gitkeep
+
+# Logs
+*.log
+
+# Uploaded documents
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# OS files
 .DS_Store
-"@ | Set-Content .gitignore
+Thumbs.db
+
+# Local editor settings
+.vscode/
