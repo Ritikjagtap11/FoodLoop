@@ -1,7 +1,16 @@
+
 import express from "express";
+
 import { verifyToken } from "../middleware/authMiddleware.js";
 import { allowRoles } from "../middleware/roleMiddleware.js";
-import { getAdminDashboard,getPendingVerifications,getVerificationById,updateVerificationStatus } from "../controllers/adminController.js";
+
+import {
+  getAdminDashboard,
+  getPendingVerifications,
+  getAllVerifications,
+  getVerificationById,
+  updateVerificationStatus
+} from "../controllers/adminController.js";
 
 const router = express.Router();
 
@@ -17,6 +26,13 @@ router.get(
   verifyToken,
   allowRoles("ADMIN"),
   getPendingVerifications
+);
+
+router.get(
+  "/verifications/all",
+  verifyToken,
+  allowRoles("ADMIN"),
+  getAllVerifications
 );
 
 router.get(

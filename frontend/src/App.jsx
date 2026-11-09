@@ -1,23 +1,59 @@
-import './App.css'
+import { Routes, Route } from "react-router-dom";
+
+import LandingPage from "./pages/public/LandingPage";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
+
+import ProtectedRoute from "./components/common/ProtectedRoute";
+import LogoutButton from "./components/common/LogoutButton";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+// Temporary dashboard placeholder
+const DashboardPlaceholder = ({ role }) => {
+  return (
+    <div style={{ padding: "40px" }}>
+      <h1>{role} Dashboard</h1>
+      <p>Welcome to FoodLoop!</p>
+
+      <LogoutButton />
+    </div>
+  );
+};
 
 function App() {
   return (
-    <div className="min-h-screen bg-green-50 flex items-center justify-center">
-      <div className="bg-white p-10 rounded-2xl shadow-lg text-center">
-        <h1 className="text-4xl font-bold text-green-700">
-          FoodLoop
-        </h1>
+    <Routes>
+      {/* Public Routes */}
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
 
-        <p className="mt-3 text-gray-600">
-          Surplus Food Donation Platform
-        </p>
+      {/* Restaurant Protected Route */}
+      <Route
+        element={<ProtectedRoute allowedRoles={["RESTAURANT"]} />}
+      >
+        <Route
+          path="/restaurant/dashboard"
+          element={<DashboardPlaceholder role="Restaurant" />}
+        />
+      </Route>
 
-        <button className="mt-6 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700">
-          Get Started
-        </button>
-      </div>
-    </div>
-  )
+      {/* NGO Protected Route */}
+      <Route element={<ProtectedRoute allowedRoles={["NGO"]} />}>
+        <Route
+          path="/ngo/dashboard"
+          element={<DashboardPlaceholder role="NGO" />}
+        />
+      </Route>
+
+      {/* Admin Protected Route */}
+      <Route element={<ProtectedRoute allowedRoles={["ADMIN"]} />}>
+  <Route
+    path="/admin/dashboard"
+    element={<AdminDashboard />}
+  />
+</Route>
+    </Routes>
+  );
 }
 
-export default App
+export default App;
